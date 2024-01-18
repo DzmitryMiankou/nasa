@@ -2,11 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { TodayDataType } from "../../redux/api/rest";
 
-const H1 = styled.h1`
-  font-size: 40px;
-  grid-area: mainText;
-`;
-
 const Figure = styled.figure`
   display: flex;
   gap: 10px;
@@ -28,7 +23,7 @@ const LoadingText = styled.p`
   font-size: 40px;
 `;
 
-const Today = styled.div`
+const Today = styled.main`
   grid-area: today;
 `;
 
@@ -36,33 +31,53 @@ const Main: React.FC<{
   isLoading: boolean;
   actual: TodayDataType<string> | undefined;
 }> = ({ isLoading, actual }) => {
+  const [loaded, setLoaded] = React.useState<boolean>(false);
+  const ref = React.useRef<HTMLImageElement>(null);
+
+  const onLoad = () => {
+    setLoaded(true);
+  };
+
+  React.useEffect(() => {
+    if (!isLoading && ref.current && ref.current.complete) {
+      onLoad();
+    }
+    console.log(ref);
+  }, [actual, isLoading]);
+
   return (
-    <>
-      <H1>Astronomy Picture of the Day</H1>
-      <Today>
-        {!isLoading ? (
-          <Figure>
-            <Img src={actual?.hdurl} alt={actual?.title} />
-            <Figcaption>
-              <time dateTime={actual?.date}>
-                <Span>Date: </Span>
-                {actual?.date}
-              </time>
-              <figcaption>
-                <Span>Title: </Span>
-                {actual?.title}
-              </figcaption>
-              <p>
-                <Span>Copyright: </Span>
-                {actual?.copyright}
-              </p>
-            </Figcaption>
-          </Figure>
-        ) : (
-          <LoadingText>Loading...</LoadingText>
-        )}
-      </Today>
-    </>
+    <Today>
+      {!isLoading ? (
+        <Figure>
+          <>
+            <Img
+              ref={ref}
+              src={actual?.hdurl}
+              onLoad={onLoad}
+              alt={actual?.title}
+            />
+            {!loaded && <p>Load</p>}
+          </>
+
+          <Figcaption>
+            <time dateTime={actual?.date}>
+              <Span>Date: </Span>
+              {actual?.date}
+            </time>
+            <figcaption>
+              <Span>Title: </Span>
+              {actual?.title}
+            </figcaption>
+            <p>
+              <Span>Copyright: </Span>
+              {actual?.copyright}
+            </p>
+          </Figcaption>
+        </Figure>
+      ) : (
+        <LoadingText>Loading...</LoadingText>
+      )}
+    </Today>
   );
 };
 

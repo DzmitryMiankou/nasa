@@ -5,12 +5,17 @@ import List from "./components/list/List";
 import Main from "./components/main/Main";
 
 const Box = styled.div`
-  padding: 10px 30px;
+  padding: 0px 0px 0px 30px;
   display: grid;
   grid-template-areas:
-    "mainText ."
-    "today  list";
+    "mainText list"
+    "today  list"
+    ".  list";
   gap: 30px;
+`;
+const H1 = styled.h1`
+  font-size: 40px;
+  grid-area: mainText;
 `;
 
 const App: React.FC = () => {
@@ -27,15 +32,16 @@ const App: React.FC = () => {
   const { data, isLoading } = useGetTodayQuery(
     `${startDate[2]}-${startDate[0]}-${startDate[1]}`
   );
-
-  const actual = data?.find((el) => el.date === `2024-01-18`);
-
-  console.log(actual);
+  const [get, set] = React.useState<string>(`2024-01-18`);
 
   return (
     <Box>
-      <Main isLoading={isLoading} actual={actual} />
-      <List data={data}></List>
+      <H1>Astronomy Picture of the Day</H1>
+      <Main
+        isLoading={isLoading}
+        actual={data?.find((el) => el.date === get)}
+      />
+      <List data={data} set={set} />
     </Box>
   );
 };
