@@ -2,29 +2,47 @@ import React from "react";
 import styled from "styled-components";
 import { TodayDataType } from "../../redux/api/rest";
 
+const Today = styled.main`
+  grid-area: today;
+`;
+
 const Figure = styled.figure`
   display: flex;
   gap: 10px;
-  width: 60vw;
+  width: 65vw;
+  position: relative;
 `;
 
-const Img = styled.img`
+const Img = styled.img<{ $loaded: boolean }>`
   max-height: 70vh;
   max-width: 35vw;
+  transition: 0.2s;
+  opacity: ${(prop) => (prop.$loaded ? 1 : 0.3)};
 `;
 
 const Span = styled.span`
   font-weight: 700;
 `;
 
-const Figcaption = styled.div``;
+const Figcaption = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
 
 const LoadingText = styled.p`
   font-size: 40px;
 `;
 
-const Today = styled.main`
-  grid-area: today;
+const Explanat = styled.p`
+  margin: 30px 0px 30px 0px;
+`;
+
+const LoadingImg = styled.div`
+  position: absolute;
+  font-size: 30px;
+  top: 10px;
+  left: 10px;
 `;
 
 const Main: React.FC<{
@@ -32,42 +50,49 @@ const Main: React.FC<{
   actual: TodayDataType<string> | undefined;
 }> = ({ isLoading, actual }) => {
   const [loaded, setLoaded] = React.useState<boolean>(false);
-  const ref = React.useRef<HTMLImageElement>(null);
 
-  const onLoad = () => {
-    setLoaded(true);
-  };
+  const onLoad = (): void => setLoaded(true);
 
-  React.useEffect(() => {
-    if (!isLoading && ref.current && ref.current.complete) {
-      onLoad();
-    }
-    console.log(ref);
-  }, [actual, isLoading]);
+  React.useEffect((): void => {
+    setLoaded(false);
+    const img = new Image();
+    img.onload = () => onLoad();
+    img.src = actual?.hdurl || "";
+  }, [actual?.hdurl]);
 
   return (
     <Today>
       {!isLoading ? (
         <Figure>
+          <Img
+            $loaded={loaded}
+            src={actual?.hdurl}
+            alt={actual?.title}
+            onLoad={onLoad}
+          />
           <>
-            <Img
-              ref={ref}
-              src={actual?.hdurl}
-              onLoad={onLoad}
-              alt={actual?.title}
-            />
-            {!loaded && <p>Load</p>}
+            {!loaded && (
+              <LoadingImg>
+                <p>Loading...</p>
+              </LoadingImg>
+            )}
           </>
-
           <Figcaption>
             <time dateTime={actual?.date}>
               <Span>Date: </Span>
-              {actual?.date}
+              {new Date(actual?.date ?? "").toLocaleDateString("en-US", {
+                month: "long",
+                day: "2-digit",
+                year: "numeric",
+              })}
             </time>
-            <figcaption>
+            <p>
               <Span>Title: </Span>
               {actual?.title}
-            </figcaption>
+            </p>
+            <Explanat>
+              <Span>Explanation: </Span> {actual?.explanation}
+            </Explanat>
             <p>
               <Span>Copyright: </Span>
               {actual?.copyright}

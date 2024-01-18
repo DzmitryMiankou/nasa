@@ -5,43 +5,46 @@ import List from "./components/list/List";
 import Main from "./components/main/Main";
 
 const Box = styled.div`
-  padding: 0px 0px 0px 30px;
+  padding: 0px 0px 0px 40px;
   display: grid;
   grid-template-areas:
     "mainText list"
     "today  list"
     ".  list";
-  gap: 30px;
+  row-gap: 20px;
 `;
 const H1 = styled.h1`
-  font-size: 40px;
+  font-size: 50px;
+  padding-top: 20px;
+  text-transform: uppercase;
   grid-area: mainText;
 `;
 
 const App: React.FC = () => {
-  const start = new Date();
-  start.setDate(start.getDate() - 7);
-  const startDate = start
-    .toLocaleDateString("en-US", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    })
-    .split("/");
+  const getDate = (params: number): string => {
+    const start = new Date();
+    start.setDate(start.getDate() - params);
+    const result = start
+      .toLocaleDateString("en-US", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+      .split("/");
+    return `${result[2]}-${result[0]}-${result[1]}`;
+  };
 
-  const { data, isLoading } = useGetTodayQuery(
-    `${startDate[2]}-${startDate[0]}-${startDate[1]}`
-  );
-  const [get, set] = React.useState<string>(`2024-01-18`);
+  const { data, isLoading } = useGetTodayQuery(getDate(7));
+  const [date, setDate] = React.useState<string>(getDate(0));
 
   return (
     <Box>
       <H1>Astronomy Picture of the Day</H1>
       <Main
         isLoading={isLoading}
-        actual={data?.find((el) => el.date === get)}
+        actual={data?.find((el) => el.date === date)}
       />
-      <List data={data} set={set} />
+      <List data={data} set={setDate} dateAct={date} />
     </Box>
   );
 };
