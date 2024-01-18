@@ -22,7 +22,13 @@ export const httpReducer = createApi({
         url: `?api_key=IZLdRDIlCm2443uGczqKgJr54l10PK2wifDtsPBG&start_date=${date}&end_date=${""}`,
       }),
     }),
+    getOne: build.query<TodayDataType<string>, string>({
+      query: (date) => ({
+        method: "GET",
+        url: `?api_key=IZLdRDIlCm2443uGczqKgJr54l10PK2wifDtsPBG&date=${date}`,
+      }),
+    }),
   }),
 });
 
-export const { useGetTodayQuery } = httpReducer;
+export const { useGetTodayQuery, useLazyGetOneQuery } = httpReducer;

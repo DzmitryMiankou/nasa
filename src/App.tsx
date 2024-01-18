@@ -1,5 +1,5 @@
 import React from "react";
-import { useGetTodayQuery } from "./redux/api/rest";
+import { useGetTodayQuery, useLazyGetOneQuery } from "./redux/api/rest";
 import styled from "styled-components";
 import List from "./components/list/List";
 import Main from "./components/main/Main";
@@ -36,20 +36,31 @@ const App: React.FC = () => {
 
   const { data, isLoading } = useGetTodayQuery(getDate(9));
   const [date, setDate] = React.useState<string>(getDate(0));
+  const [trigger, oneDay] = useLazyGetOneQuery();
+  const [switche, setSwitch] = React.useState<boolean>(false);
+
+  const get = (date: string) => {
+    if (date.length === 0) return setSwitch(false);
+    setSwitch(true);
+    trigger(date);
+  };
+
+  console.log(oneDay.data);
 
   return (
     <Box>
       <H1>Astronomy Picture of the Day</H1>
       <Main
         isLoading={isLoading}
-        actual={data?.find((el) => el.date === date)}
+        actual={switche ? oneDay.data : data?.find((el) => el.date === date)}
       />
       <List
-        min={getDate(359)}
+        min={getDate(350)}
         max={getDate(0)}
         data={data}
         set={setDate}
-        dateAct={date}
+        dateAct={switche ? oneDay?.data?.date : date}
+        get={get}
       />
     </Box>
   );

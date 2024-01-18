@@ -37,16 +37,20 @@ const CalendarBox = styled.div`
 type Props = {
   data: TodayDataType<string>[] | undefined;
   set: Dispatch<SetStateAction<string>>;
-  dateAct: string;
+  dateAct: string | undefined;
   min: string;
   max: string;
+  get: (date: string) => void;
 };
 
-const List: React.FC<Props> = ({ data, set, dateAct, min, max }) => {
-  const handlerClick = (date: string): void => set(date);
+const List: React.FC<Props> = ({ data, set, dateAct, min, max, get }) => {
+  const handlerClick = (date: string): void => {
+    get("");
+    set(date);
+  };
 
   const handlerDate = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    console.log(e.target.value);
+    get(e.target.value);
   };
 
   return (
