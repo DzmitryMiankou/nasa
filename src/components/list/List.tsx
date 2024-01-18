@@ -30,12 +30,24 @@ const H3 = styled.h3`
   padding: 10px 0px;
 `;
 
-const List: React.FC<{
+const CalendarBox = styled.div`
+  margin: 40px 0px;
+`;
+
+type Props = {
   data: TodayDataType<string>[] | undefined;
   set: Dispatch<SetStateAction<string>>;
   dateAct: string;
-}> = ({ data, set, dateAct }) => {
+  min: string;
+  max: string;
+};
+
+const List: React.FC<Props> = ({ data, set, dateAct, min, max }) => {
   const handlerClick = (date: string): void => set(date);
+
+  const handlerDate = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    console.log(e.target.value);
+  };
 
   return (
     <ListBox>
@@ -59,7 +71,16 @@ const List: React.FC<{
             </Li>
           ))}
       </Ul>
-      <input type="date"></input>
+      <CalendarBox>
+        <h4>Select date</h4>
+        <input
+          type="date"
+          min={min}
+          max={max}
+          onKeyDown={(e) => e.preventDefault()}
+          onChange={handlerDate}
+        />
+      </CalendarBox>
     </ListBox>
   );
 };

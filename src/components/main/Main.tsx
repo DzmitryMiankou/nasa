@@ -45,6 +45,12 @@ const LoadingImg = styled.div`
   left: 10px;
 `;
 
+const ImgBox = styled.div`
+  max-height: 70vh;
+  max-width: 35vw;
+  width: 100%;
+`;
+
 const Main: React.FC<{
   isLoading: boolean;
   actual: TodayDataType<string> | undefined;
@@ -64,19 +70,15 @@ const Main: React.FC<{
     <Today>
       {!isLoading ? (
         <Figure>
-          <Img
-            $loaded={loaded}
-            src={actual?.hdurl}
-            alt={actual?.title}
-            onLoad={onLoad}
-          />
-          <>
-            {!loaded && (
-              <LoadingImg>
-                <p>Loading...</p>
-              </LoadingImg>
-            )}
-          </>
+          <ImgBox>
+            <Img
+              $loaded={loaded}
+              src={actual?.hdurl}
+              alt={actual?.title}
+              onLoad={onLoad}
+            />
+          </ImgBox>
+          <>{!loaded && <LoadingImg>Loading...</LoadingImg>}</>
           <Figcaption>
             <time dateTime={actual?.date}>
               <Span>Date: </Span>

@@ -34,7 +34,7 @@ const App: React.FC = () => {
     return `${result[2]}-${result[0]}-${result[1]}`;
   };
 
-  const { data, isLoading } = useGetTodayQuery(getDate(7));
+  const { data, isLoading } = useGetTodayQuery(getDate(9));
   const [date, setDate] = React.useState<string>(getDate(0));
 
   return (
@@ -44,7 +44,13 @@ const App: React.FC = () => {
         isLoading={isLoading}
         actual={data?.find((el) => el.date === date)}
       />
-      <List data={data} set={setDate} dateAct={date} />
+      <List
+        min={getDate(359)}
+        max={getDate(0)}
+        data={data}
+        set={setDate}
+        dateAct={date}
+      />
     </Box>
   );
 };
