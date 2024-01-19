@@ -55,6 +55,7 @@ const ImgBox = styled.div`
   max-height: 70vh;
   max-width: 35vw;
   width: 100%;
+  height: 100%;
 `;
 
 const Main: React.FC<{

@@ -45,20 +45,24 @@ const App: React.FC = () => {
   const [trigger, oneDay] = useLazyGetOneQuery();
   const [switche, setSwitch] = React.useState<boolean>(false);
 
-  const get = (date: string) => {
+  const get = (date: string): void => {
     if (date.length === 0) return setSwitch(false);
     setSwitch(true);
     trigger(date);
   };
 
-  const findDay = data?.find((el) =>
-    el.date !== date ? el.date === getDate(1) : el.date === date
-  );
-
   return (
     <Box>
       <H1>Astronomy Picture of the Day</H1>
-      <Main isLoading={isLoading} actual={switche ? oneDay.data : findDay} />
+      <Main
+        isLoading={isLoading}
+        actual={
+          switche
+            ? oneDay.data
+            : data?.find((el) => el.date === date) ??
+              (data && data[data.length - 1])
+        }
+      />
       <List
         min={getDate(350)}
         max={getDate(0)}

@@ -59,9 +59,8 @@ const List: React.FC<Props> = ({ data, set, dateAct, min, max, get }) => {
     set(date);
   };
 
-  const handlerDate = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handlerDate = (e: React.ChangeEvent<HTMLInputElement>): void =>
     get(e.target.value);
-  };
 
   return (
     <ListBox>
