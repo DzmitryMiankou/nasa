@@ -3,6 +3,7 @@ import { useGetTodayQuery, useLazyGetOneQuery } from "./redux/api/rest";
 import styled from "styled-components";
 import List from "./components/list/List";
 import Main from "./components/main/Main";
+import BG from "./img/BG.svg";
 
 const Box = styled.div`
   padding: 0px 0px 0px 40px;
@@ -13,7 +14,11 @@ const Box = styled.div`
     ".  list";
   row-gap: 20px;
   overflow-x: hidden;
+  background-image: url("${BG}");
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
+
 const H1 = styled.h1`
   font-size: 50px;
   padding-top: 20px;

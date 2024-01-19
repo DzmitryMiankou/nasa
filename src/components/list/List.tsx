@@ -2,14 +2,16 @@ import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { TodayDataType } from "../../redux/api/rest";
 
-const ListBox = styled.aside`
+const ListBox = styled.aside<{ $open: boolean }>`
   grid-area: list;
   background-color: #d9d9d9;
   min-height: 100vh;
   height: 100%;
   padding-left: 12px;
   @media (max-width: 745px) {
-    display: none;
+    display: ${(prop) => (prop.$open ? "block" : "none")};
+    position: fixed;
+    right: 0;
   }
 `;
 
@@ -39,6 +41,9 @@ const H3 = styled.h3`
 
 const CalendarBox = styled.div`
   margin: 40px 0px;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
 `;
 
 const Title = styled.p`
@@ -49,10 +54,14 @@ const Title = styled.p`
 
 const ListButt = styled.div`
   display: none;
-  padding: 20px;
+  padding: 10px 10px 0px 0px;
   @media (max-width: 745px) {
     display: block;
   }
+`;
+
+const Label = styled.label`
+  font-weight: 500;
 `;
 
 type Props = {
@@ -65,18 +74,28 @@ type Props = {
 };
 
 const List: React.FC<Props> = ({ data, set, dateAct, min, max, get }) => {
+  const [val, setVal] = React.useState<string>("");
+  const [open, setOpen] = React.useState<boolean>(false);
   const handlerClick = (date: string): void => {
     get("");
     set(date);
+    setVal("");
+    setOpen(false);
   };
 
-  const handlerDate = (e: React.ChangeEvent<HTMLInputElement>): void =>
+  const handlerDate = (e: React.ChangeEvent<HTMLInputElement>): void => {
     get(e.target.value);
+    setVal(e.target.value);
+  };
+
+  const handlerClickOpen = () => {
+    setOpen(true);
+  };
 
   return (
     <>
-      <ListButt>List</ListButt>
-      <ListBox>
+      <ListButt onClick={handlerClickOpen}>List</ListButt>
+      <ListBox $open={open}>
         <H3>In the last seven days</H3>
         <Ul>
           {data &&
@@ -98,10 +117,12 @@ const List: React.FC<Props> = ({ data, set, dateAct, min, max, get }) => {
             ))}
         </Ul>
         <CalendarBox>
-          <h4>Select date</h4>
+          <Label htmlFor="date-in">Select date</Label>
           <input
+            id="date-in"
+            lang="en-US"
+            value={val}
             type="date"
-            min={min}
             max={max}
             onKeyDown={(e) => e.preventDefault()}
             onChange={handlerDate}

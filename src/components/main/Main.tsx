@@ -51,11 +51,15 @@ const LoadingImg = styled.div`
   left: 10px;
 `;
 
-const ImgBox = styled.div`
+const ImgBox = styled.a`
   max-height: 70vh;
   max-width: 35vw;
   width: 100%;
   height: 100%;
+  transition: 0.2s;
+  &:hover {
+    transform: translate(2px, 2px);
+  }
 `;
 
 const Main: React.FC<{
@@ -77,7 +81,7 @@ const Main: React.FC<{
     <Today>
       {!isLoading ? (
         <Figure>
-          <ImgBox>
+          <ImgBox href={actual?.url} target="blank">
             <Img
               $loaded={loaded}
               src={actual?.hdurl}
@@ -102,10 +106,16 @@ const Main: React.FC<{
             <Explanat>
               <Span>Explanation: </Span> {actual?.explanation}
             </Explanat>
-            <p>
-              <Span>Copyright: </Span>
-              {actual?.copyright}
-            </p>
+            <>
+              {actual?.copyright && actual?.copyright?.length > 0 ? (
+                <p>
+                  <Span>Copyright: </Span>
+                  {actual?.copyright}
+                </p>
+              ) : (
+                <></>
+              )}
+            </>
           </Figcaption>
         </Figure>
       ) : (
