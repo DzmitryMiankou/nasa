@@ -8,6 +8,9 @@ const ListBox = styled.aside`
   min-height: 100vh;
   height: 100%;
   padding-left: 12px;
+  @media (max-width: 745px) {
+    display: none;
+  }
 `;
 
 const Ul = styled.ul`
@@ -44,6 +47,14 @@ const Title = styled.p`
   }
 `;
 
+const ListButt = styled.div`
+  display: none;
+  padding: 20px;
+  @media (max-width: 745px) {
+    display: block;
+  }
+`;
+
 type Props = {
   data: TodayDataType<string>[] | undefined;
   set: Dispatch<SetStateAction<string>>;
@@ -63,38 +74,41 @@ const List: React.FC<Props> = ({ data, set, dateAct, min, max, get }) => {
     get(e.target.value);
 
   return (
-    <ListBox>
-      <H3>In the last seven days</H3>
-      <Ul>
-        {data &&
-          data.map(({ title, hdurl, date }) => (
-            <Li
-              key={hdurl}
-              onClick={() => handlerClick(date)}
-              $date={date === dateAct}
-            >
-              <p>
-                {new Date(date).toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "2-digit",
-                  year: "numeric",
-                })}
-              </p>
-              <Title>{title}</Title>
-            </Li>
-          ))}
-      </Ul>
-      <CalendarBox>
-        <h4>Select date</h4>
-        <input
-          type="date"
-          min={min}
-          max={max}
-          onKeyDown={(e) => e.preventDefault()}
-          onChange={handlerDate}
-        />
-      </CalendarBox>
-    </ListBox>
+    <>
+      <ListButt>List</ListButt>
+      <ListBox>
+        <H3>In the last seven days</H3>
+        <Ul>
+          {data &&
+            data.map(({ title, hdurl, date }) => (
+              <Li
+                key={hdurl}
+                onClick={() => handlerClick(date)}
+                $date={date === dateAct}
+              >
+                <p>
+                  {new Date(date).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "2-digit",
+                    year: "numeric",
+                  })}
+                </p>
+                <Title>{title}</Title>
+              </Li>
+            ))}
+        </Ul>
+        <CalendarBox>
+          <h4>Select date</h4>
+          <input
+            type="date"
+            min={min}
+            max={max}
+            onKeyDown={(e) => e.preventDefault()}
+            onChange={handlerDate}
+          />
+        </CalendarBox>
+      </ListBox>
+    </>
   );
 };
 

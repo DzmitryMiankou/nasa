@@ -12,6 +12,7 @@ const Box = styled.div`
     "today  list"
     ".  list";
   row-gap: 20px;
+  overflow-x: hidden;
 `;
 const H1 = styled.h1`
   font-size: 50px;
