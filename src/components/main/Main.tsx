@@ -9,8 +9,11 @@ const Today = styled.main`
 const Figure = styled.figure`
   display: flex;
   gap: 10px;
-  width: 65vw;
+  width: 76vw;
   position: relative;
+  @media (max-width: 1300px) {
+    flex-direction: column;
+  }
 `;
 
 const Img = styled.img<{ $loaded: boolean }>`
@@ -18,6 +21,9 @@ const Img = styled.img<{ $loaded: boolean }>`
   max-width: 35vw;
   transition: 0.2s;
   opacity: ${(prop) => (prop.$loaded ? 1 : 0.3)};
+  @media (max-width: 1300px) {
+    max-width: 70vw;
+  }
 `;
 
 const Span = styled.span`

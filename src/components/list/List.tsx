@@ -5,7 +5,8 @@ import { TodayDataType } from "../../redux/api/rest";
 const ListBox = styled.aside`
   grid-area: list;
   background-color: #d9d9d9;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   padding-left: 12px;
 `;
 
@@ -28,10 +29,19 @@ const Li = styled.li<{ $date: boolean }>`
 
 const H3 = styled.h3`
   padding: 10px 0px;
+  @media (max-width: 1300px) {
+    font-size: 14px;
+  }
 `;
 
 const CalendarBox = styled.div`
   margin: 40px 0px;
+`;
+
+const Title = styled.p`
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `;
 
 type Props = {
@@ -71,7 +81,7 @@ const List: React.FC<Props> = ({ data, set, dateAct, min, max, get }) => {
                   year: "numeric",
                 })}
               </p>
-              <p>{title}</p>
+              <Title>{title}</Title>
             </Li>
           ))}
       </Ul>

@@ -18,6 +18,12 @@ const H1 = styled.h1`
   padding-top: 20px;
   text-transform: uppercase;
   grid-area: mainText;
+  @media (max-width: 1250px) {
+    font-size: 40px;
+  }
+  @media (max-width: 1000px) {
+    font-size: 30px;
+  }
 `;
 
 const App: React.FC = () => {
@@ -45,15 +51,14 @@ const App: React.FC = () => {
     trigger(date);
   };
 
-  console.log(oneDay.data);
+  const findDay = data?.find((el) =>
+    el.date !== date ? el.date === getDate(1) : el.date === date
+  );
 
   return (
     <Box>
       <H1>Astronomy Picture of the Day</H1>
-      <Main
-        isLoading={isLoading}
-        actual={switche ? oneDay.data : data?.find((el) => el.date === date)}
-      />
+      <Main isLoading={isLoading} actual={switche ? oneDay.data : findDay} />
       <List
         min={getDate(350)}
         max={getDate(0)}
