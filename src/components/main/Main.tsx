@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { TodayDataType } from "../../redux/api/rest";
+import { DateClient } from "../../options/date.option";
 
 const Today = styled.main`
   grid-area: today;
@@ -94,9 +95,7 @@ const Main: React.FC<{
             <time dateTime={actual?.date}>
               <Span>Date: </Span>
               {new Date(actual?.date ?? "").toLocaleDateString("en-US", {
-                month: "long",
-                day: "2-digit",
-                year: "numeric",
+                ...DateClient,
               })}
             </time>
             <p>

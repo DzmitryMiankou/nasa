@@ -1,8 +1,9 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import styled from "styled-components";
-import { TodayDataType } from "../../redux/api/rest";
 import { ReactComponent as MenuIcon } from "../../img/menu-svgrepo-com.svg";
 import { ReactComponent as ClouseIcon } from "../../img/x-svgrepo-com.svg";
+import { ListProps } from "../../interfaces/props.interfaces";
+import { DateClient } from "../../options/date.option";
 
 const ListBox = styled.aside<{ $open: boolean }>`
   grid-area: list;
@@ -79,16 +80,7 @@ const Label = styled.label`
   font-weight: 500;
 `;
 
-type Props = {
-  data: TodayDataType<string>[] | undefined;
-  set: Dispatch<SetStateAction<string>>;
-  dateAct: string | undefined;
-  min: string;
-  max: string;
-  get: (date: string) => void;
-};
-
-const List: React.FC<Props> = ({ data, set, dateAct, min, max, get }) => {
+const List: React.FC<ListProps> = ({ data, set, dateAct, min, max, get }) => {
   const [val, setVal] = React.useState<string>("");
   const [open, setOpen] = React.useState<boolean>(false);
   const handlerClick = (date: string): void => {
@@ -129,9 +121,7 @@ const List: React.FC<Props> = ({ data, set, dateAct, min, max, get }) => {
               >
                 <p>
                   {new Date(date).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "2-digit",
-                    year: "numeric",
+                    ...DateClient,
                   })}
                 </p>
                 <Title>{title}</Title>

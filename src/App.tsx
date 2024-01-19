@@ -4,6 +4,8 @@ import styled from "styled-components";
 import List from "./components/list/List";
 import Main from "./components/main/Main";
 import BG from "./img/BG.svg";
+import { ListProps } from "./interfaces/props.interfaces";
+import { DateServer } from "./options/date.option";
 
 const Box = styled.div`
   padding: 0px 0px 0px 40px;
@@ -37,11 +39,7 @@ const App: React.FC = () => {
     const start = new Date();
     start.setDate(start.getDate() - params);
     const result = start
-      .toLocaleDateString("en-US", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      })
+      .toLocaleDateString("en-US", { ...DateServer })
       .split("/");
     return `${result[2]}-${result[0]}-${result[1]}`;
   };
@@ -57,6 +55,15 @@ const App: React.FC = () => {
     trigger(date);
   };
 
+  const listProp: ListProps = {
+    min: "1995-08-01",
+    max: getDate(0),
+    data: data,
+    set: setDate,
+    dateAct: switche ? oneDay?.data?.date : date,
+    get: get,
+  };
+
   return (
     <Box>
       <H1>Astronomy Picture of the Day</H1>
@@ -69,14 +76,7 @@ const App: React.FC = () => {
               (data && data[data.length - 1])
         }
       />
-      <List
-        min={"1995-08-01"}
-        max={getDate(0)}
-        data={data}
-        set={setDate}
-        dateAct={switche ? oneDay?.data?.date : date}
-        get={get}
-      />
+      <List {...listProp} />
     </Box>
   );
 };
