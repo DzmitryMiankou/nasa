@@ -1,6 +1,8 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { TodayDataType } from "../../redux/api/rest";
+import { ReactComponent as MenuIcon } from "../../img/menu-svgrepo-com.svg";
+import { ReactComponent as ClouseIcon } from "../../img/x-svgrepo-com.svg";
 
 const ListBox = styled.aside<{ $open: boolean }>`
   grid-area: list;
@@ -10,6 +12,7 @@ const ListBox = styled.aside<{ $open: boolean }>`
   padding-left: 12px;
   @media (max-width: 745px) {
     display: ${(prop) => (prop.$open ? "block" : "none")};
+    padding-right: 5px;
     position: fixed;
     right: 0;
   }
@@ -52,12 +55,24 @@ const Title = styled.p`
   }
 `;
 
-const ListButt = styled.div`
+const ListButt = styled.button`
   display: none;
-  padding: 10px 10px 0px 0px;
+  margin: 20px 20px 0px 20px;
   @media (max-width: 745px) {
     display: block;
   }
+  @media (max-width: 598px) {
+    margin: -20px 20px 0px 20px;
+  }
+`;
+
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ClouseButt = styled(ListButt)`
+  margin: 0px;
 `;
 
 const Label = styled.label`
@@ -86,17 +101,24 @@ const List: React.FC<Props> = ({ data, set, dateAct, min, max, get }) => {
   const handlerDate = (e: React.ChangeEvent<HTMLInputElement>): void => {
     get(e.target.value);
     setVal(e.target.value);
+    setOpen(false);
   };
 
-  const handlerClickOpen = () => {
-    setOpen(true);
-  };
+  const handlerClickOpen = (): void => setOpen(true);
+  const handlerClickClouse = (): void => setOpen(false);
 
   return (
     <>
-      <ListButt onClick={handlerClickOpen}>List</ListButt>
+      <ListButt onClick={handlerClickOpen}>
+        <MenuIcon width={"20px"} height={"20px"} />
+      </ListButt>
       <ListBox $open={open}>
-        <H3>In the last seven days</H3>
+        <Header>
+          <H3>Last few days</H3>
+          <ClouseButt onClick={handlerClickClouse}>
+            <ClouseIcon width={"15px"} height={"15px"} />
+          </ClouseButt>
+        </Header>
         <Ul>
           {data &&
             data.map(({ title, hdurl, date }) => (
@@ -124,6 +146,7 @@ const List: React.FC<Props> = ({ data, set, dateAct, min, max, get }) => {
             value={val}
             type="date"
             max={max}
+            min={min}
             onKeyDown={(e) => e.preventDefault()}
             onChange={handlerDate}
           />

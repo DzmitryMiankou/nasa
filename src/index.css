@@ -19,3 +19,8 @@ ul {
 p {
   font-size: 14px;
 }
+
+button {
+  background-color: transparent;
+  border: none;
+}

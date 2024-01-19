@@ -55,7 +55,7 @@ const ImgBox = styled.a`
   max-height: 70vh;
   max-width: 35vw;
   width: 100%;
-  height: 100%;
+  min-height: 100px;
   transition: 0.2s;
   &:hover {
     transform: translate(2px, 2px);

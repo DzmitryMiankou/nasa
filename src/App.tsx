@@ -70,7 +70,7 @@ const App: React.FC = () => {
         }
       />
       <List
-        min={getDate(350)}
+        min={"1995-08-01"}
         max={getDate(0)}
         data={data}
         set={setDate}
